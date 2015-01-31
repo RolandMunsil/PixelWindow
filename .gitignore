@@ -1,3 +1,7 @@
+# Build folders
+Debug/
+Release/
+
 # Visual Studio files
 *.suo
 *.sdf
