@@ -6,6 +6,7 @@ Release/
 *.suo
 *.sdf
 *.opensdf
+*.user
 
 # Compiled Object files
 *.slo
