@@ -8,7 +8,13 @@
 #include <stdexcept>
 #include <thread>
 
-class PixelWindow
+#if defined DLL_EXPORT
+#define DECLDIR __declspec(dllexport)
+#else
+#define DECLDIR __declspec(dllimport)
+#endif
+
+class DECLDIR PixelWindow
 {
 private:
 	HWND hWindow;
@@ -58,3 +64,18 @@ public:
 	int GetTotalPixels();
 
 };
+
+//For C#
+extern "C" DECLDIR PixelWindow* CreatePixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX, int windowY)
+{
+	return new PixelWindow(hInstance, windowText, windowWidth, windowHeight, windowX, windowY);
+}
+
+extern "C" DECLDIR void DisposePixelWindow(PixelWindow* pPixelWindow)
+{
+	if (pPixelWindow != NULL)
+	{
+		delete pPixelWindow;
+		pPixelWindow = NULL;
+	}
+}

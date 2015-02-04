@@ -5,17 +5,6 @@
 
 //TODO: figure out whether UINT32 or RGBQUAD or even a custom struct should be used.
 
-//class PixelWindow
-//{
-	/*HWND hWindow;
-	RGBQUAD* pBackBufferPixels;
-	HDC hBackBufferDC;
-
-	int width;
-	int height;
-
-	HANDLE hWindowCreatedEvent;*/
-
 	LRESULT CALLBACK PixelWindow::WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		//TODO: do we actually need this special case?
@@ -121,7 +110,7 @@
 		}
 	}
 
-	PixelWindow::PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX, int windowY)
+	DECLDIR PixelWindow::PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX, int windowY)
 	{
 		RECT windowRect;
 		windowRect.left = windowX;
@@ -141,14 +130,14 @@
 		WaitForSingleObject(hWindowCreatedEvent, INFINITE);
 	}
 
-	void PixelWindow::Destroy()
+	DECLDIR void PixelWindow::Destroy()
 	{
 		SendMessage(hWindow, WM_CLOSE, 0, 0);
 		messageLoopThread.join();
 	}
 
 
-	bool PixelWindow::SetPixel(int x, int y, RGBQUAD color)
+	DECLDIR bool PixelWindow::SetPixel(int x, int y, RGBQUAD color)
 	{
 		if (IsWithinClient(x, y))
 		{
@@ -161,7 +150,7 @@
 		}
 	}
 
-	bool PixelWindow::SetPixel(int index, RGBQUAD color)
+	DECLDIR bool PixelWindow::SetPixel(int index, RGBQUAD color)
 	{
 		if (IsWithinClient(index))
 		{
@@ -174,7 +163,7 @@
 		}
 	}
 
-	void PixelWindow::SetPixelNoCheck(int x, int y, RGBQUAD color)
+	DECLDIR void PixelWindow::SetPixelNoCheck(int x, int y, RGBQUAD color)
 	{
 		int numPixels = x + (y * width);
 
@@ -182,13 +171,13 @@
 		*writeTo = color;
 	}
 
-	void PixelWindow::SetPixelNoCheck(int index, RGBQUAD color)
+	DECLDIR void PixelWindow::SetPixelNoCheck(int index, RGBQUAD color)
 	{
 		RGBQUAD* writeTo = pBackBufferPixels + index;
 		*writeTo = color;
 	}
 
-	RGBQUAD PixelWindow::GetPixel(int x, int y)
+	DECLDIR RGBQUAD PixelWindow::GetPixel(int x, int y)
 	{
 		if (IsWithinClient(x, y))
 		{
@@ -200,7 +189,7 @@
 		}
 	}
 
-	RGBQUAD PixelWindow::GetPixel(int index)
+	DECLDIR RGBQUAD PixelWindow::GetPixel(int index)
 	{
 		if (IsWithinClient(index))
 		{
@@ -212,7 +201,7 @@
 		}
 	}
 
-	RGBQUAD PixelWindow::GetPixelNoCheck(int x, int y)
+	DECLDIR RGBQUAD PixelWindow::GetPixelNoCheck(int x, int y)
 	{
 		int numPixels = x + (y * width);
 
@@ -220,13 +209,13 @@
 		return *reinterpret_cast<RGBQUAD*>(pColor);
 	}
 
-	RGBQUAD PixelWindow::GetPixelNoCheck(int index)
+	DECLDIR RGBQUAD PixelWindow::GetPixelNoCheck(int index)
 	{
 		RGBQUAD* pColor = pBackBufferPixels + index;
 		return *reinterpret_cast<RGBQUAD*>(pColor);
 	}
 
-	void PixelWindow::Fill(RGBQUAD color)
+	DECLDIR void PixelWindow::Fill(RGBQUAD color)
 	{
 		for (int i = 0; i < (width * height); i++)
 		{
@@ -235,36 +224,34 @@
 		}
 	}
 
-	bool PixelWindow::IsWithinClient(int x, int y)
+	DECLDIR bool PixelWindow::IsWithinClient(int x, int y)
 	{
 		return (x >= 0) && (y >= 0) && (x < width) && (y < height);
 	}
 
-	bool PixelWindow::IsWithinClient(int index)
+	DECLDIR bool PixelWindow::IsWithinClient(int index)
 	{
 		return index >= 0 && index < (width * height);
 	}
 
 	//TODO: is there a better name?
-	void PixelWindow::UpdateClient()
+	DECLDIR void PixelWindow::UpdateClient()
 	{
 		BitBlt(GetDC(hWindow), 0, 0, width, height, hBackBufferDC, 0, 0, SRCCOPY);
 	}
 
 	//Getters
-	int PixelWindow::GetClientWidth()
+	DECLDIR int PixelWindow::GetClientWidth()
 	{
 		return width;
 	}
 
-	int PixelWindow::GetClientHeight()
+	DECLDIR int PixelWindow::GetClientHeight()
 	{
 		return height;
 	}
 
-	int PixelWindow::GetTotalPixels()
+	DECLDIR int PixelWindow::GetTotalPixels()
 	{
 		return width * height;
 	}
-
-//};
