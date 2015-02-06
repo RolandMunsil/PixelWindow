@@ -14,11 +14,13 @@
 #define DECLDIR __declspec(dllimport)
 #endif
 
+typedef uint32_t uint32;
+
 class DECLDIR PixelWindow
 {
 private:
 	HWND hWindow;
-	RGBQUAD* pBackBufferPixels;
+	uint32* pBackBufferPixels;
 	HDC hBackBufferDC;
 
 	int width;
@@ -36,20 +38,20 @@ public:
 	PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX = 0, int windowY = 0);
 	~PixelWindow();
 
-	bool SetPixel(int x, int y, RGBQUAD color);
-	bool SetPixel(int index, RGBQUAD color);
+	bool SetPixel(int x, int y, uint32 color);
+	bool SetPixel(int index, uint32 color);
 
 	//TODO: compare performance of check vs. nocheck and decide whether to keep NoCheck methods
-	void SetPixelNoCheck(int x, int y, RGBQUAD color);
-	void SetPixelNoCheck(int index, RGBQUAD color);
+	void SetPixelNoCheck(int x, int y, uint32 color);
+	void SetPixelNoCheck(int index, uint32 color);
 
-	RGBQUAD GetPixel(int x, int y);
-	RGBQUAD GetPixel(int index);
+	uint32 GetPixel(int x, int y);
+	uint32 GetPixel(int index);
 
-	RGBQUAD GetPixelNoCheck(int x, int y);
-	RGBQUAD GetPixelNoCheck(int index);
+	uint32 GetPixelNoCheck(int x, int y);
+	uint32 GetPixelNoCheck(int index);
 
-	void Fill(RGBQUAD color);
+	void Fill(uint32 color);
 
 	bool IsWithinClient(int x, int y);
 	bool IsWithinClient(int index);

@@ -2,9 +2,6 @@
 
 #include "PixelWindow.h"
 
-
-//TODO: figure out whether UINT32 or RGBQUAD or even a custom struct should be used.
-
 	LRESULT CALLBACK PixelWindow::WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		//TODO: do we actually need this special case?
@@ -139,7 +136,7 @@
 		//TODO: clean up stuff
 	}
 
-	DECLDIR bool PixelWindow::SetPixel(int x, int y, RGBQUAD color)
+	DECLDIR bool PixelWindow::SetPixel(int x, int y, uint32 color)
 	{
 		if (IsWithinClient(x, y))
 		{
@@ -152,7 +149,7 @@
 		}
 	}
 
-	DECLDIR bool PixelWindow::SetPixel(int index, RGBQUAD color)
+	DECLDIR bool PixelWindow::SetPixel(int index, uint32 color)
 	{
 		if (IsWithinClient(index))
 		{
@@ -165,21 +162,21 @@
 		}
 	}
 
-	DECLDIR void PixelWindow::SetPixelNoCheck(int x, int y, RGBQUAD color)
+	DECLDIR void PixelWindow::SetPixelNoCheck(int x, int y, uint32 color)
 	{
 		int numPixels = x + (y * width);
 
-		RGBQUAD* writeTo = pBackBufferPixels + numPixels;
+		uint32* writeTo = pBackBufferPixels + numPixels;
 		*writeTo = color;
 	}
 
-	DECLDIR void PixelWindow::SetPixelNoCheck(int index, RGBQUAD color)
+	DECLDIR void PixelWindow::SetPixelNoCheck(int index, uint32 color)
 	{
-		RGBQUAD* writeTo = pBackBufferPixels + index;
+		uint32* writeTo = pBackBufferPixels + index;
 		*writeTo = color;
 	}
 
-	DECLDIR RGBQUAD PixelWindow::GetPixel(int x, int y)
+	DECLDIR uint32 PixelWindow::GetPixel(int x, int y)
 	{
 		if (IsWithinClient(x, y))
 		{
@@ -192,7 +189,7 @@
 		}
 	}
 
-	DECLDIR RGBQUAD PixelWindow::GetPixel(int index)
+	DECLDIR uint32 PixelWindow::GetPixel(int index)
 	{
 		if (IsWithinClient(index))
 		{
@@ -205,25 +202,25 @@
 		}
 	}
 
-	DECLDIR RGBQUAD PixelWindow::GetPixelNoCheck(int x, int y)
+	DECLDIR uint32 PixelWindow::GetPixelNoCheck(int x, int y)
 	{
 		int numPixels = x + (y * width);
 
-		RGBQUAD* pColor = pBackBufferPixels + numPixels;
+		uint32* pColor = pBackBufferPixels + numPixels;
 		return *pColor;
 	}
 
-	DECLDIR RGBQUAD PixelWindow::GetPixelNoCheck(int index)
+	DECLDIR uint32 PixelWindow::GetPixelNoCheck(int index)
 	{
-		RGBQUAD* pColor = pBackBufferPixels + index;
+		uint32* pColor = pBackBufferPixels + index;
 		return *pColor;
 	}
 
-	DECLDIR void PixelWindow::Fill(RGBQUAD color)
+	DECLDIR void PixelWindow::Fill(uint32 color)
 	{
 		for (int i = 0; i < (width * height); i++)
 		{
-			RGBQUAD* pPixel = pBackBufferPixels + i;
+			uint32* pPixel = pBackBufferPixels + i;
 			*pPixel = color;
 		}
 	}

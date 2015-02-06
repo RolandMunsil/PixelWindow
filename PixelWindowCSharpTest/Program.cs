@@ -23,10 +23,10 @@ namespace PixelWindowCSharpTest
             //Console.ReadKey();
 
             //Test color getting//filling
-            window.Fill((RGBAColor)0xFF0000FF);
+            window.Fill((ARGBColor)0xFFFF0000);
             for (int i = 0; i < window.TotalPixels; i++)
             {
-                if (window.GetPixel(i) != (RGBAColor)0xFF0000FF)
+                if (window.GetPixel(i) != (ARGBColor)0xFFFF0000)
                 {
                     Debugger.Break();
                 }
@@ -35,7 +35,7 @@ namespace PixelWindowCSharpTest
             {
                 for (int y = 0; y < window.ClientHeight; y++)
                 {
-                    if (window.GetPixel(x, y) != (RGBAColor)0xFF0000FF)
+                    if (window.GetPixel(x, y) != (ARGBColor)0xFFFF0000)
                     {
                         Debugger.Break();
                     }
@@ -93,16 +93,20 @@ namespace PixelWindowCSharpTest
 
             for (int i = 0; i < window.TotalPixels; i++)
             {
-                if (i % 2 == 0)
+                if (i % 2 == 0 ^ (i / window.ClientWidth) % 2 == 0)
                 {
-                    window.SetPixel(i, (RGBAColor)0x00FF00FF);
+                    window.SetPixel(i, (ARGBColor)0xFF00FF00);
                 }
                 else
                 {
-                    window.SetPixel(i, (RGBAColor)0x0000FFFF);
+                    window.SetPixel(i, (ARGBColor)0xFF0000FF);
                 }
-                window.UpdateClient();
+                if (i % window.ClientWidth == 0)
+                {
+                    window.UpdateClient();
+                }
             }
+            window.UpdateClient();
 
             Console.WriteLine("Client should be checkerbord green and blue.");
             Console.ReadKey();

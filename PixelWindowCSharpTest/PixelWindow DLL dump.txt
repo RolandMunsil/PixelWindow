@@ -1,16 +1,11 @@
-﻿C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug>dumpbin /exports PixelWindow.dll
-Microsoft (R) COFF/PE Dumper Version 12.00.31101.0
-Copyright (C) Microsoft Corporation.  All rights reserved.
-
-
-Dump of file PixelWindow.dll
+﻿Dump of file PixelWindow.dll
 
 File Type: DLL
 
   Section contains the following exports for PixelWindow.dll
 
     00000000 characteristics
-    54D2A693 time date stamp Wed Feb 04 15:09:07 2015
+    54D446FB time date stamp Thu Feb 05 20:45:47 2015
         0.00 version
            1 ordinal base
           22 number of functions
@@ -18,35 +13,25 @@ File Type: DLL
 
     ordinal hint RVA      name
 
-          1    0 0001137A ??0PixelWindow@@QAE@PAUHINSTANCE__@@PB_WHHHH@Z = @ILT+885(??0PixelWindow@@QAE@PAUHINSTANCE__@@PB_WHHHH@Z)
-          2    1 00011280 ??1PixelWindow@@QAE@XZ = @ILT+635(??1PixelWindow@@QAE@XZ)
-          3    2 000112F3 ?CreateWindowAndRunMessageLoop@PixelWindow@@AAEXPAUHINSTANCE__@@UtagRECT@@PB_W@Z = @ILT+750(?CreateWindowAndRunMessageLoop@PixelWindow@@AAEXPAUHINSTANCE__@@UtagRECT@@PB_W@Z)
-          4    3 00011456 ?Fill@PixelWindow@@QAEXUtagRGBQUAD@@@Z = @ILT+1105(?Fill@PixelWindow@@QAEXUtagRGBQUAD@@@Z)
-          5    4 00011271 ?GetClientHeight@PixelWindow@@QAEHXZ = @ILT+620(?GetClientHeight@PixelWindow@@QAEHXZ)
-          6    5 000112C1 ?GetClientWidth@PixelWindow@@QAEHXZ = @ILT+700(?GetClientWidth@PixelWindow@@QAEHXZ)
-          7    6 00011096 ?GetPixel@PixelWindow@@QAE?AUtagRGBQUAD@@H@Z = @ILT+145(?GetPixel@PixelWindow@@QAE?AUtagRGBQUAD@@H@Z)
-          8    7 00011415 ?GetPixel@PixelWindow@@QAE?AUtagRGBQUAD@@HH@Z = @ILT+1040(?GetPixel@PixelWindow@@QAE?AUtagRGBQUAD@@HH@Z)
-          9    8 0001124E ?GetPixelNoCheck@PixelWindow@@QAE?AUtagRGBQUAD@@H@Z = @ILT+585(?GetPixelNoCheck@PixelWindow@@QAE?AUtagRGBQUAD@@H@Z)
-         10    9 00011136 ?GetPixelNoCheck@PixelWindow@@QAE?AUtagRGBQUAD@@HH@Z = @ILT+305(?GetPixelNoCheck@PixelWindow@@QAE?AUtagRGBQUAD@@HH@Z)
+          1    0 00011384 ??0PixelWindow@@QAE@PAUHINSTANCE__@@PB_WHHHH@Z = @ILT+895(??0PixelWindow@@QAE@PAUHINSTANCE__@@PB_WHHHH@Z)
+          2    1 0001128A ??1PixelWindow@@QAE@XZ = @ILT+645(??1PixelWindow@@QAE@XZ)
+          3    2 00011302 ?CreateWindowAndRunMessageLoop@PixelWindow@@AAEXPAUHINSTANCE__@@UtagRECT@@PB_W@Z = @ILT+765(?CreateWindowAndRunMessageLoop@PixelWindow@@AAEXPAUHINSTANCE__@@UtagRECT@@PB_W@Z)
+          4    3 0001105F ?Fill@PixelWindow@@QAEXI@Z = @ILT+90(?Fill@PixelWindow@@QAEXI@Z)
+          5    4 0001127B ?GetClientHeight@PixelWindow@@QAEHXZ = @ILT+630(?GetClientHeight@PixelWindow@@QAEHXZ)
+          6    5 000112CB ?GetClientWidth@PixelWindow@@QAEHXZ = @ILT+710(?GetClientWidth@PixelWindow@@QAEHXZ)
+          7    6 000113F7 ?GetPixel@PixelWindow@@QAEIH@Z = @ILT+1010(?GetPixel@PixelWindow@@QAEIH@Z)
+          8    7 000110DC ?GetPixel@PixelWindow@@QAEIHH@Z = @ILT+215(?GetPixel@PixelWindow@@QAEIHH@Z)
+          9    8 00011186 ?GetPixelNoCheck@PixelWindow@@QAEIH@Z = @ILT+385(?GetPixelNoCheck@PixelWindow@@QAEIH@Z)
+         10    9 000112E4 ?GetPixelNoCheck@PixelWindow@@QAEIHH@Z = @ILT+735(?GetPixelNoCheck@PixelWindow@@QAEIHH@Z)
          11    A 00011005 ?GetTotalPixels@PixelWindow@@QAEHXZ = @ILT+0(?GetTotalPixels@PixelWindow@@QAEHXZ)
-         12    B 00011307 ?IsWithinClient@PixelWindow@@QAE_NH@Z = @ILT+770(?IsWithinClient@PixelWindow@@QAE_NH@Z)
-         13    C 000111FE ?IsWithinClient@PixelWindow@@QAE_NHH@Z = @ILT+505(?IsWithinClient@PixelWindow@@QAE_NHH@Z)
-         14    D 000113E3 ?SetPixel@PixelWindow@@QAE_NHHUtagRGBQUAD@@@Z = @ILT+990(?SetPixel@PixelWindow@@QAE_NHHUtagRGBQUAD@@@Z)
-         15    E 000113BB ?SetPixel@PixelWindow@@QAE_NHUtagRGBQUAD@@@Z = @ILT+950(?SetPixel@PixelWindow@@QAE_NHUtagRGBQUAD@@@Z)
-         16    F 00011361 ?SetPixelNoCheck@PixelWindow@@QAEXHHUtagRGBQUAD@@@Z = @ILT+860(?SetPixelNoCheck@PixelWindow@@QAEXHHUtagRGBQUAD@@@Z)
-         17   10 00011113 ?SetPixelNoCheck@PixelWindow@@QAEXHUtagRGBQUAD@@@Z = @ILT+270(?SetPixelNoCheck@PixelWindow@@QAEXHUtagRGBQUAD@@@Z)
+         12    B 00011316 ?IsWithinClient@PixelWindow@@QAE_NH@Z = @ILT+785(?IsWithinClient@PixelWindow@@QAE_NH@Z)
+         13    C 0001120D ?IsWithinClient@PixelWindow@@QAE_NHH@Z = @ILT+520(?IsWithinClient@PixelWindow@@QAE_NHH@Z)
+         14    D 0001106E ?SetPixel@PixelWindow@@QAE_NHHI@Z = @ILT+105(?SetPixel@PixelWindow@@QAE_NHHI@Z)
+         15    E 00011154 ?SetPixel@PixelWindow@@QAE_NHI@Z = @ILT+335(?SetPixel@PixelWindow@@QAE_NHI@Z)
+         16    F 00011069 ?SetPixelNoCheck@PixelWindow@@QAEXHHI@Z = @ILT+100(?SetPixelNoCheck@PixelWindow@@QAEXHHI@Z)
+         17   10 00011497 ?SetPixelNoCheck@PixelWindow@@QAEXHI@Z = @ILT+1170(?SetPixelNoCheck@PixelWindow@@QAEXHI@Z)
          18   11 000113F2 ?UpdateClient@PixelWindow@@QAEXXZ = @ILT+1005(?UpdateClient@PixelWindow@@QAEXXZ)
          19   12 0001100F ?WindowProcedure@PixelWindow@@CGJPAUHWND__@@IIJ@Z = @ILT+10(?WindowProcedure@PixelWindow@@CGJPAUHWND__@@IIJ@Z)
          20   13 00011438 ?__autoclassinit2@PixelWindow@@QAEXI@Z = @ILT+1075(?__autoclassinit2@PixelWindow@@QAEXI@Z)
-         21   14 000112BC CreatePixelWindow = @ILT+695(_CreatePixelWindow)
-         22   15 0001125D DisposePixelWindow = @ILT+600(_DisposePixelWindow)
-
-  Summary
-
-        1000 .data
-        1000 .idata
-        3000 .rdata
-        1000 .reloc
-        1000 .rsrc
-        A000 .text
-       10000 .textbss
+         21   14 000112C6 CreatePixelWindow = @ILT+705(_CreatePixelWindow)
+         22   15 00011267 DisposePixelWindow = @ILT+610(_DisposePixelWindow)
