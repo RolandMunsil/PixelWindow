@@ -13,6 +13,11 @@
   <ItemGroup>
     <ClCompile Include="Tester.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PixelWindow\PixelWindow.vcxproj">
+      <Project>{6c54bdfb-1289-4993-bf6d-6db3093c093f}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D0953D96-70B1-4DC6-B19F-4B92D5357DDE}</ProjectGuid>
     <RootNamespace>PixelWindowTest</RootNamespace>

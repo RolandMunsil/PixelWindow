@@ -130,12 +130,14 @@
 		WaitForSingleObject(hWindowCreatedEvent, INFINITE);
 	}
 
-	DECLDIR void PixelWindow::Destroy()
+	DECLDIR PixelWindow::~PixelWindow()
 	{
+		//Destroy the window
 		SendMessage(hWindow, WM_CLOSE, 0, 0);
 		messageLoopThread.join();
-	}
 
+		//TODO: clean up stuff
+	}
 
 	DECLDIR bool PixelWindow::SetPixel(int x, int y, RGBQUAD color)
 	{
@@ -185,6 +187,7 @@
 		}
 		else
 		{
+			//Is this going to be a problem in C#?
 			throw std::out_of_range("Coordinates are outside of the client's bounds");
 		}
 	}
@@ -197,6 +200,7 @@
 		}
 		else
 		{
+			//Is this going to be a problem in C#?
 			throw std::out_of_range("Coordinates are outside of the client's bounds");
 		}
 	}
@@ -206,13 +210,13 @@
 		int numPixels = x + (y * width);
 
 		RGBQUAD* pColor = pBackBufferPixels + numPixels;
-		return *reinterpret_cast<RGBQUAD*>(pColor);
+		return *pColor;
 	}
 
 	DECLDIR RGBQUAD PixelWindow::GetPixelNoCheck(int index)
 	{
 		RGBQUAD* pColor = pBackBufferPixels + index;
-		return *reinterpret_cast<RGBQUAD*>(pColor);
+		return *pColor;
 	}
 
 	DECLDIR void PixelWindow::Fill(RGBQUAD color)

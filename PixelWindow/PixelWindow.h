@@ -34,8 +34,7 @@ private:
 
 public:
 	PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX = 0, int windowY = 0);
-
-	void Destroy();
+	~PixelWindow();
 
 	bool SetPixel(int x, int y, RGBQUAD color);
 	bool SetPixel(int index, RGBQUAD color);
@@ -62,16 +61,15 @@ public:
 	int GetClientHeight();
 
 	int GetTotalPixels();
-
 };
 
 //For C#
-extern "C" DECLDIR PixelWindow* CreatePixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX, int windowY)
+extern "C" __declspec(dllexport) PixelWindow* CreatePixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX, int windowY)
 {
 	return new PixelWindow(hInstance, windowText, windowWidth, windowHeight, windowX, windowY);
 }
 
-extern "C" DECLDIR void DisposePixelWindow(PixelWindow* pPixelWindow)
+extern "C" __declspec(dllexport) void DisposePixelWindow(PixelWindow* pPixelWindow)
 {
 	if (pPixelWindow != NULL)
 	{

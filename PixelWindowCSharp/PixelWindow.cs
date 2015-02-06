@@ -15,25 +15,77 @@ namespace PixelWindowCSharp
         byte green;
         byte blue;
         byte reserved;
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is RGBAColor))
+            {
+                return false;
+            }
+            return (RGBAColor)obj == this;
+        }
+
+        public override int GetHashCode()
+        {
+            //Maybe this is not the best idea?
+            return ((uint)this).GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return "0x" + ((uint)this).ToString("X8");
+        }
+
+        public static bool operator ==(RGBAColor color1, RGBAColor color2)
+        {
+            return color1.red == color2.red &&
+                   color1.green == color2.green &&
+                   color1.blue == color2.blue &&
+                   color1.reserved == color2.reserved;
+        }
+
+        public static bool operator !=(RGBAColor color1, RGBAColor color2)
+        {
+            return !(color1 == color2);
+        }
+
+        public static explicit operator RGBAColor(uint i)
+        {
+            unsafe
+            {
+                //TODO: Is this a bad idea? Is it actually faster than setting each byte? Does it actually compile to nothing?
+                return *((RGBAColor*)(&i));
+            }
+        }
+
+        public static explicit operator uint(RGBAColor color)
+        {
+            unsafe
+            {
+                //TODO: Is this a bad idea? Is it actually faster than setting each byte? Does it actually compile to nothing?
+                return *((uint*)(&color));
+            }
+        }
     }
 
-    public class PixelWindow
+    public class PixelWindow : IDisposable
     {
-        IntPtr pPixelWindow;
+        private IntPtr pPixelWindow;
 
-        public int Width
+        public int ClientWidth
         {
             get
             {
+                //TODO: should these be cached?
                 return GetClientWidth(pPixelWindow);
             }
         }
 
-        public int Height
+        public int ClientHeight
         {
             get
             {
-                throw new NotImplementedException();
+                return GetClientHeight(pPixelWindow);
             }
         }
 
@@ -41,7 +93,7 @@ namespace PixelWindowCSharp
         {
             get
             {
-                throw new NotImplementedException();
+                return GetTotalPixels(pPixelWindow);
             }
         }
 
@@ -75,73 +127,129 @@ namespace PixelWindowCSharp
             pPixelWindow = CreatePixelWindow(hInstance, windowTitle, windowWidth, windowHeight, x, y);
         }
 
-        public void Destroy()
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            DisposePixelWindow(pPixelWindow);
+            GC.SuppressFinalize(this);
         }
 
-        public bool SetPixel(int x, int y, RGBAColor color)
+        //Finalizer
+        ~PixelWindow()
         {
-            throw new NotImplementedException();
-        }
-        public bool SetPixel(int index, RGBAColor color)
-        {
-            throw new NotImplementedException();
+            Dispose();
         }
 
-        public void SetPixelNoCheck(int x, int y, RGBAColor color)
+        public void SetPixel(int x, int y, RGBAColor color)
         {
-            throw new NotImplementedException();
+            bool success = SetPixel(pPixelWindow, x, y, color);
+            if (!success)
+            {
+                throw new ArgumentOutOfRangeException("Coordinate is outside of the client's bounds");
+            }
         }
-        public void SetPixelNoCheck(int index, RGBAColor color)
+        public void SetPixel(int index, RGBAColor color)
         {
-            throw new NotImplementedException();
+            bool success = SetPixel(pPixelWindow, index, color);
+            if (!success)
+            {
+                throw new ArgumentOutOfRangeException("Coordinate is outside of the client's bounds");
+            }
         }
 
         public RGBAColor GetPixel(int x, int y)
         {
-            throw new NotImplementedException();
+            return GetPixel(pPixelWindow, x, y);
         }
         public RGBAColor GetPixel(int index)
         {
-            throw new NotImplementedException();
-        }
-
-        public RGBAColor GetPixelNoCheck(int x, int y)
-        {
-            throw new NotImplementedException();
-        }
-        public RGBAColor GetPixelNoCheck(int index)
-        {
-            throw new NotImplementedException();
+            return GetPixel(pPixelWindow, index);
         }
 
         public void Fill(RGBAColor color)
         {
-            throw new NotImplementedException();
+            Fill(pPixelWindow, color);
         }
 
         public bool IsWithinClient(int x, int y)
         {
-            throw new NotImplementedException();
+            return IsWithinClient(pPixelWindow, x, y);
         }
         public bool IsWithinClient(int index)
         {
-            throw new NotImplementedException();
+            return IsWithinClient(pPixelWindow, index);
         }
 
         public void UpdateClient()
         {
-            throw new NotImplementedException();
+            UpdateClient(pPixelWindow);
         }
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        //TODO: update the paths once testing is done
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll", 
+            CallingConvention = CallingConvention.Cdecl, 
+            CharSet = CharSet.Unicode)]
         static private extern IntPtr CreatePixelWindow(IntPtr hInstance, string windowText, int windowWidth, int windowHeight, int windowX, int windowY);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll", 
+            CallingConvention = CallingConvention.Cdecl, 
+            CharSet = CharSet.Unicode)]
         static private extern void DisposePixelWindow(IntPtr pPixelWindow);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll", EntryPoint = "?GetClientWidth@PixelWindow@@QAEHXZ", CallingConvention = CallingConvention.ThisCall)]
-        static public extern int GetClientWidth(IntPtr pClassObject);
+
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+            EntryPoint = "?SetPixel@PixelWindow@@QAE_NHHUtagRGBQUAD@@@Z",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern bool SetPixel(IntPtr pClassObject, int x, int y, RGBAColor color);
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+            EntryPoint = "?SetPixel@PixelWindow@@QAE_NHUtagRGBQUAD@@@Z",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern bool SetPixel(IntPtr pClassObject, int index, RGBAColor color);
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+            EntryPoint = "?GetPixel@PixelWindow@@QAE?AUtagRGBQUAD@@HH@Z",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern RGBAColor GetPixel(IntPtr pClassObject, int x, int y);
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+            EntryPoint = "?GetPixel@PixelWindow@@QAE?AUtagRGBQUAD@@H@Z",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern RGBAColor GetPixel(IntPtr pClassObject, int index);
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+            EntryPoint = "?Fill@PixelWindow@@QAEXUtagRGBQUAD@@@Z",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern void Fill(IntPtr pClassObject, RGBAColor color);
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+            EntryPoint = "?IsWithinClient@PixelWindow@@QAE_NHH@Z",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern bool IsWithinClient(IntPtr pClassObject, int x, int y);
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+            EntryPoint = "?IsWithinClient@PixelWindow@@QAE_NH@Z",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern bool IsWithinClient(IntPtr pClassObject, int index);
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+            EntryPoint = "?UpdateClient@PixelWindow@@QAEXXZ",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern void UpdateClient(IntPtr pClassObject);
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll", 
+            EntryPoint = "?GetClientWidth@PixelWindow@@QAEHXZ", 
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern int GetClientWidth(IntPtr pClassObject);
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+            EntryPoint = "?GetClientHeight@PixelWindow@@QAEHXZ",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern int GetClientHeight(IntPtr pClassObject);
+
+        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+            EntryPoint = "?GetTotalPixels@PixelWindow@@QAEHXZ",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern int GetTotalPixels(IntPtr pClassObject);
     }
 }

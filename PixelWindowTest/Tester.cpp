@@ -30,5 +30,5 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR /*pCmdLine*/, int nCmd
 
 	Sleep(10000);
 
-	window.Destroy();
+	delete &window;
 }
