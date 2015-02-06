@@ -16,6 +16,10 @@ namespace PixelWindowCSharp
         public byte green;
         public byte blue;
 
+        public static ARGBColor Red { get { return (ARGBColor)0xFFFF0000; } }
+        public static ARGBColor Green { get { return (ARGBColor)0xFF00FF00; } }
+        public static ARGBColor Blue { get { return (ARGBColor)0xFF0000FF; } }
+
         public override bool Equals(object obj)
         {
             if (!(obj is ARGBColor))

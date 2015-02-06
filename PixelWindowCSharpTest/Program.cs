@@ -23,10 +23,10 @@ namespace PixelWindowCSharpTest
             //Console.ReadKey();
 
             //Test color getting//filling
-            window.Fill((ARGBColor)0xFFFF0000);
+            window.Fill(ARGBColor.Red);
             for (int i = 0; i < window.TotalPixels; i++)
             {
-                if (window.GetPixel(i) != (ARGBColor)0xFFFF0000)
+                if (window.GetPixel(i) != ARGBColor.Red)
                 {
                     Debugger.Break();
                 }
@@ -35,7 +35,7 @@ namespace PixelWindowCSharpTest
             {
                 for (int y = 0; y < window.ClientHeight; y++)
                 {
-                    if (window.GetPixel(x, y) != (ARGBColor)0xFFFF0000)
+                    if (window.GetPixel(x, y) != ARGBColor.Red)
                     {
                         Debugger.Break();
                     }
@@ -95,11 +95,11 @@ namespace PixelWindowCSharpTest
             {
                 if (i % 2 == 0 ^ (i / window.ClientWidth) % 2 == 0)
                 {
-                    window.SetPixel(i, (ARGBColor)0xFF00FF00);
+                    window.SetPixel(i, ARGBColor.Blue);
                 }
                 else
                 {
-                    window.SetPixel(i, (ARGBColor)0xFF0000FF);
+                    window.SetPixel(i, ARGBColor.Green);
                 }
                 if (i % window.ClientWidth == 0)
                 {
