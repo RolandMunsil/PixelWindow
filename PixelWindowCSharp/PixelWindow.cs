@@ -189,73 +189,73 @@ namespace PixelWindowCSharp
         }
 
         //TODO: update the paths once testing is done
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll", 
+        [DllImport("PixelWindow.dll", 
             CallingConvention = CallingConvention.Cdecl, 
             CharSet = CharSet.Unicode)]
         static private extern IntPtr CreatePixelWindow(IntPtr hInstance, string windowText, int windowWidth, int windowHeight, int windowX, int windowY);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll", 
+        [DllImport("PixelWindow.dll", 
             CallingConvention = CallingConvention.Cdecl, 
             CharSet = CharSet.Unicode)]
         static private extern void DisposePixelWindow(IntPtr pPixelWindow);
 
 
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+        [DllImport("PixelWindow.dll",
             EntryPoint = "?SetPixel@PixelWindow@@QAE_NHHI@Z",
             CallingConvention = CallingConvention.ThisCall)]
         [return : MarshalAs(UnmanagedType.U1)]
         static private extern bool SetPixel(IntPtr pClassObject, int x, int y, ARGBColor color);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+        [DllImport("PixelWindow.dll",
             EntryPoint = "?SetPixel@PixelWindow@@QAE_NHI@Z",
             CallingConvention = CallingConvention.ThisCall)]
         [return: MarshalAs(UnmanagedType.U1)]
         static private extern bool SetPixel(IntPtr pClassObject, int index, ARGBColor color);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+        [DllImport("PixelWindow.dll",
             EntryPoint = "?GetPixel@PixelWindow@@QAEIHH@Z",
             CallingConvention = CallingConvention.ThisCall)]
         static private extern ARGBColor GetPixel(IntPtr pClassObject, int x, int y);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+        [DllImport("PixelWindow.dll",
             EntryPoint = "?GetPixel@PixelWindow@@QAEIH@Z",
             CallingConvention = CallingConvention.ThisCall)]
         static private extern ARGBColor GetPixel(IntPtr pClassObject, int index);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+        [DllImport("PixelWindow.dll",
             EntryPoint = "?Fill@PixelWindow@@QAEXI@Z",
             CallingConvention = CallingConvention.ThisCall)]
         static private extern void Fill(IntPtr pClassObject, ARGBColor color);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+        [DllImport("PixelWindow.dll",
             EntryPoint = "?IsWithinClient@PixelWindow@@QAE_NHH@Z",
             CallingConvention = CallingConvention.ThisCall)]
         [return: MarshalAs(UnmanagedType.U1)]
         static private extern bool IsWithinClient(IntPtr pClassObject, int x, int y);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+        [DllImport("PixelWindow.dll",
             EntryPoint = "?IsWithinClient@PixelWindow@@QAE_NH@Z",
             CallingConvention = CallingConvention.ThisCall)]
         [return: MarshalAs(UnmanagedType.U1)]
         static private extern bool IsWithinClient(IntPtr pClassObject, int index);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+        [DllImport("PixelWindow.dll",
             EntryPoint = "?UpdateClient@PixelWindow@@QAEXXZ",
             CallingConvention = CallingConvention.ThisCall)]
         static private extern void UpdateClient(IntPtr pClassObject);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll", 
+        [DllImport("PixelWindow.dll", 
             EntryPoint = "?GetClientWidth@PixelWindow@@QAEHXZ", 
             CallingConvention = CallingConvention.ThisCall)]
         static private extern int GetClientWidth(IntPtr pClassObject);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+        [DllImport("PixelWindow.dll",
             EntryPoint = "?GetClientHeight@PixelWindow@@QAEHXZ",
             CallingConvention = CallingConvention.ThisCall)]
         static private extern int GetClientHeight(IntPtr pClassObject);
 
-        [DllImport(@"C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\PixelWindow\Debug\PixelWindow.dll",
+        [DllImport("PixelWindow.dll",
             EntryPoint = "?GetTotalPixels@PixelWindow@@QAEHXZ",
             CallingConvention = CallingConvention.ThisCall)]
         static private extern int GetTotalPixels(IntPtr pClassObject);

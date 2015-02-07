@@ -110,6 +110,8 @@ namespace PixelWindowCSharpTest
 
             Console.WriteLine("Client should be checkerbord green and blue.");
             Console.ReadKey();
+
+            window.Dispose();
         }
     }
 }

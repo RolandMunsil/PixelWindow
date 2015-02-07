@@ -16,11 +16,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR /*pCmdLine*/, int nCmd
 			//Distance from (0, 0)
 			int dist = (int)sqrt(x * x + y * y);
 
-			RGBQUAD color;
-			color.rgbRed = dist & 0xFF;
-			color.rgbGreen = dist & 0xFF;
-			color.rgbBlue = dist & 0xFF;
-			color.rgbReserved = 0xFF;
+			uint32 color = 0xFF000000;
+
+			color |= (dist & 0xFF) << 16;
+			color |= (dist & 0xFF) << 8;
+			color |= (dist & 0xFF) << 0;
 
 			window.SetPixel(x, y, color);
 		}
