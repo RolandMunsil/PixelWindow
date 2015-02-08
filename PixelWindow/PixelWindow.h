@@ -16,7 +16,7 @@
 
 typedef uint32_t uint32;
 
-class DECLDIR PixelWindow
+class PixelWindow
 {
 private:
 	HWND hWindow;
@@ -35,34 +35,34 @@ private:
 	void CreateWindowAndRunMessageLoop(HINSTANCE hInstance, RECT windowRect, LPCWSTR windowText);
 
 public:
-	PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX = 0, int windowY = 0);
-	~PixelWindow();
+	DECLDIR PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX = 0, int windowY = 0);
+	DECLDIR ~PixelWindow();
 
-	bool SetPixel(int x, int y, uint32 color);
-	bool SetPixel(int index, uint32 color);
+	DECLDIR bool SetPixel(int x, int y, uint32 color);
+	DECLDIR bool SetPixel(int index, uint32 color);
 
 	//TODO: compare performance of check vs. nocheck and decide whether to keep NoCheck methods
-	void SetPixelNoCheck(int x, int y, uint32 color);
-	void SetPixelNoCheck(int index, uint32 color);
+	DECLDIR void SetPixelNoCheck(int x, int y, uint32 color);
+	DECLDIR void SetPixelNoCheck(int index, uint32 color);
 
-	uint32 GetPixel(int x, int y);
-	uint32 GetPixel(int index);
+	DECLDIR uint32 GetPixel(int x, int y);
+	DECLDIR uint32 GetPixel(int index);
 
-	uint32 GetPixelNoCheck(int x, int y);
-	uint32 GetPixelNoCheck(int index);
+	DECLDIR uint32 GetPixelNoCheck(int x, int y);
+	DECLDIR uint32 GetPixelNoCheck(int index);
 
-	void Fill(uint32 color);
+	DECLDIR void Fill(uint32 color);
 
-	bool IsWithinClient(int x, int y);
-	bool IsWithinClient(int index);
+	DECLDIR bool IsWithinClient(int x, int y);
+	DECLDIR bool IsWithinClient(int index);
 
-	void UpdateClient();
+	DECLDIR void UpdateClient();
 
-	int GetClientWidth();
+	DECLDIR int GetClientWidth();
 
-	int GetClientHeight();
+	DECLDIR int GetClientHeight();
 
-	int GetTotalPixels();
+	DECLDIR int GetTotalPixels();
 };
 
 //For C#
