@@ -8,13 +8,21 @@ using System.Threading.Tasks;
 
 namespace PixelWindowCSharp
 {
-    [StructLayout(LayoutKind.Sequential, Size = 4)]
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
     public struct ARGBColor
     {
+        [FieldOffset(0)]
         public byte reserved;
+        [FieldOffset(1)]
         public byte red;
+        [FieldOffset(2)]
         public byte green;
+        [FieldOffset(3)]
         public byte blue;
+
+        //TODO: better name?
+        [FieldOffset(0)]
+        public uint asUint32;
 
         public static ARGBColor Red { get { return (ARGBColor)0xFFFF0000; } }
         public static ARGBColor Green { get { return (ARGBColor)0xFF00FF00; } }
