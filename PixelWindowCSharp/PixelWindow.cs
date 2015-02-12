@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace PixelWindowCSharp
 {
+    //TODO: add xml documentation
+
     [StructLayout(LayoutKind.Explicit, Size = 4)]
     public struct ARGBColor
     {
@@ -148,7 +150,7 @@ namespace PixelWindowCSharp
         //Finalizer
         ~PixelWindow()
         {
-            Dispose();
+            DisposePixelWindow(pPixelWindow);
         }
 
         public void SetPixel(int x, int y, ARGBColor color)
@@ -196,7 +198,6 @@ namespace PixelWindowCSharp
             UpdateClient(pPixelWindow);
         }
 
-        //TODO: update the paths once testing is done
         [DllImport("PixelWindow.dll", 
             CallingConvention = CallingConvention.Cdecl, 
             CharSet = CharSet.Unicode)]

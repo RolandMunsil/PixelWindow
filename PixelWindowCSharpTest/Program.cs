@@ -103,12 +103,12 @@ namespace PixelWindowCSharpTest
                 }
                 if (i % window.ClientWidth == 0)
                 {
-                    window.UpdateClient();
+                    //window.UpdateClient();
                 }
             }
             window.UpdateClient();
 
-            Console.WriteLine("Client should be checkerbord green and blue.");
+            Console.WriteLine("Client should be checkerboard green and blue.");
             Console.ReadKey();
 
             window.Dispose();
