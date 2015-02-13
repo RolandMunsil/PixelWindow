@@ -105,6 +105,7 @@ void PixelWindow::CreateWindowAndRunMessageLoop(HINSTANCE hInstance, RECT window
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+	hasBeenClosed = true;
 }
 
 DECLDIR PixelWindow::PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX, int windowY)
@@ -125,6 +126,8 @@ DECLDIR PixelWindow::PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int wi
 	messageLoopThread = std::thread(&PixelWindow::CreateWindowAndRunMessageLoop, this, hInstance, windowRect, windowText);
 
 	WaitForSingleObject(hWindowCreatedEvent, INFINITE);
+
+	hasBeenClosed = false;
 }
 
 DECLDIR PixelWindow::~PixelWindow()
@@ -134,6 +137,11 @@ DECLDIR PixelWindow::~PixelWindow()
 	messageLoopThread.join();
 
 	//TODO: clean up stuff
+}
+
+DECLDIR bool PixelWindow::HasBeenClosed()
+{
+	return hasBeenClosed;
 }
 
 DECLDIR bool PixelWindow::SetPixel(int x, int y, uint32 color)

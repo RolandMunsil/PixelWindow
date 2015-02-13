@@ -22,6 +22,7 @@ private:
 	HWND hWindow;
 	uint32* pBackBufferPixels;
 	HDC hBackBufferDC;
+	bool hasBeenClosed;
 
 	int width;
 	int height;
@@ -37,6 +38,8 @@ private:
 public:
 	DECLDIR PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX = 0, int windowY = 0);
 	DECLDIR ~PixelWindow();
+
+	DECLDIR bool HasBeenClosed();
 
 	DECLDIR bool SetPixel(int x, int y, uint32 color);
 	DECLDIR bool SetPixel(int index, uint32 color);

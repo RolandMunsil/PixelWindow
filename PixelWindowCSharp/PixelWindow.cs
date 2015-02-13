@@ -111,6 +111,14 @@ namespace PixelWindowCSharp
             }
         }
 
+        public bool IsClosed
+        {
+            get
+            {
+                return HasBeenClosed(pPixelWindow);
+            }
+        }
+
         public ARGBColor this[int index]
         {
             get
@@ -207,6 +215,12 @@ namespace PixelWindowCSharp
             CallingConvention = CallingConvention.Cdecl, 
             CharSet = CharSet.Unicode)]
         static private extern void DisposePixelWindow(IntPtr pPixelWindow);
+
+        [DllImport("PixelWindow.dll",
+            EntryPoint = "?HasBeenClosed@PixelWindow@@QAE_NXZ",
+            CallingConvention = CallingConvention.ThisCall)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        static private extern bool HasBeenClosed(IntPtr pClassObject);
 
 
 

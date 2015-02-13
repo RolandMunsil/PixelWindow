@@ -41,7 +41,7 @@
   <ItemGroup>
     <Reference Include="PixelWindowCSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Debug\PixelWindowCSharp.dll</HintPath>
+      <HintPath>..\Release\PixelWindowCSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
