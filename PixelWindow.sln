@@ -8,8 +8,15 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PixelWindowTest", "PixelWindowTest\PixelWindowTest.vcxproj", "{D0953D96-70B1-4DC6-B19F-4B92D5357DDE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelWindowCSharp", "PixelWindowCSharp\PixelWindowCSharp.csproj", "{BEFD0001-B1BF-401C-8394-C7A92666525C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6C54BDFB-1289-4993-BF6D-6DB3093C093F} = {6C54BDFB-1289-4993-BF6D-6DB3093C093F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelWindowCSharpTest", "PixelWindowCSharpTest\PixelWindowCSharpTest.csproj", "{04B8F446-D47D-4D41-9B4B-DFB7FF11D827}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BEFD0001-B1BF-401C-8394-C7A92666525C} = {BEFD0001-B1BF-401C-8394-C7A92666525C}
+		{6C54BDFB-1289-4993-BF6D-6DB3093C093F} = {6C54BDFB-1289-4993-BF6D-6DB3093C093F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
