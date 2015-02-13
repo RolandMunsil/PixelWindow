@@ -13,13 +13,13 @@ namespace PixelWindowCSharp
     [StructLayout(LayoutKind.Explicit)]
     public struct ARGBColor
     {
-        [FieldOffset(0)]
-        public byte reserved;
-        [FieldOffset(1)]
-        public byte red;
-        [FieldOffset(2)]
-        public byte green;
         [FieldOffset(3)]
+        public byte reserved;
+        [FieldOffset(2)]
+        public byte red;
+        [FieldOffset(1)]
+        public byte green;
+        [FieldOffset(0)]
         public byte blue;
 
         //TODO: better name?
