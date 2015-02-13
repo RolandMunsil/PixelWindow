@@ -10,7 +10,7 @@ namespace PixelWindowCSharp
 {
     //TODO: add xml documentation
 
-    [StructLayout(LayoutKind.Explicit, Size = 4)]
+    [StructLayout(LayoutKind.Explicit)]
     public struct ARGBColor
     {
         [FieldOffset(0)]
@@ -41,13 +41,12 @@ namespace PixelWindowCSharp
 
         public override int GetHashCode()
         {
-            //Maybe this is not the best idea?
-            return ((uint)this).GetHashCode();
+            return asUint32.GetHashCode();
         }
 
         public override string ToString()
         {
-            return "0x" + ((uint)this).ToString("X8");
+            return "0x" + asUint32.ToString("X8");
         }
 
         public static bool operator ==(ARGBColor color1, ARGBColor color2)
@@ -74,11 +73,7 @@ namespace PixelWindowCSharp
 
         public static explicit operator uint(ARGBColor color)
         {
-            unsafe
-            {
-                //TODO: Is this a bad idea? Is it actually faster than setting each byte? Does it actually compile to nothing?
-                return *((uint*)(&color));
-            }
+            return color.asUint32;
         }
     }
 
