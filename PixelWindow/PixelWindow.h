@@ -66,6 +66,8 @@ public:
 	DECLDIR int GetClientHeight();
 
 	DECLDIR int GetTotalPixels();
+
+	DECLDIR HBITMAP GetHBackBufferBitmap();
 };
 
 //For C#

@@ -264,3 +264,9 @@ DECLDIR int PixelWindow::GetTotalPixels()
 {
 	return width * height;
 }
+
+DECLDIR HBITMAP PixelWindow::GetHBackBufferBitmap()
+{
+	return (HBITMAP)GetCurrentObject(hBackBufferDC, OBJ_BITMAP);
+	//GetObject(hbmp, sizeof(BITMAP), &mainBitmap);
+}

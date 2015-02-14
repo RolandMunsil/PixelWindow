@@ -111,6 +111,9 @@ namespace PixelWindowCSharpTest
             Console.WriteLine("Client should be checkerboard green and blue.");
             Console.ReadKey();
 
+            //Test Bitmap thing.
+            window.BackBuffer.Save("test.png", System.Drawing.Imaging.ImageFormat.Png);
+
             window.Dispose();
         }
     }

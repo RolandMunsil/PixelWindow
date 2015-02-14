@@ -75,6 +75,16 @@ namespace PixelWindowCSharp
         {
             return color.asUint32;
         }
+
+        public static explicit operator ARGBColor(System.Drawing.Color color)
+        {
+            return (ARGBColor)unchecked((uint)color.ToArgb());
+        }
+
+        public static explicit operator System.Drawing.Color(ARGBColor color)
+        {
+            return System.Drawing.Color.FromArgb(unchecked((int)color.asUint32));
+        }
     }
 
     public class PixelWindow : IDisposable
@@ -111,6 +121,14 @@ namespace PixelWindowCSharp
             get
             {
                 return HasBeenClosed(pPixelWindow);
+            }
+        }
+
+        public System.Drawing.Bitmap BackBuffer
+        {
+            get
+            {
+                return System.Drawing.Image.FromHbitmap(GetHBackBufferBitmap(pPixelWindow));
             }
         }
 
@@ -201,6 +219,8 @@ namespace PixelWindowCSharp
             UpdateClient(pPixelWindow);
         }
 
+        //dumpbin /exports "C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\Debug\PixelWindow.dll"
+
         [DllImport("PixelWindow.dll", 
             CallingConvention = CallingConvention.Cdecl, 
             CharSet = CharSet.Unicode)]
@@ -277,5 +297,10 @@ namespace PixelWindowCSharp
             EntryPoint = "?GetTotalPixels@PixelWindow@@QAEHXZ",
             CallingConvention = CallingConvention.ThisCall)]
         static private extern int GetTotalPixels(IntPtr pClassObject);
+
+        [DllImport("PixelWindow.dll",
+            EntryPoint="?GetHBackBufferBitmap@PixelWindow@@QAEPAUHBITMAP__@@XZ",
+            CallingConvention = CallingConvention.ThisCall)]
+        static private extern IntPtr GetHBackBufferBitmap(IntPtr pClassObject);
     }
 }
