@@ -26,9 +26,11 @@ namespace PixelWindowCSharp
         [FieldOffset(0)]
         public uint asUint32;
 
-        public static ARGBColor Red { get { return (ARGBColor)0xFFFF0000; } }
-        public static ARGBColor Green { get { return (ARGBColor)0xFF00FF00; } }
-        public static ARGBColor Blue { get { return (ARGBColor)0xFF0000FF; } }
+        public static readonly ARGBColor Red = (ARGBColor)0xFFFF0000;
+        public static readonly ARGBColor Green = (ARGBColor)0xFF00FF00;
+        public static readonly ARGBColor Blue = (ARGBColor)0xFF0000FF;
+        public static readonly ARGBColor Black = (ARGBColor)0xFF000000;
+        public static readonly ARGBColor White = (ARGBColor)0xFFFFFFFF;
 
         public override bool Equals(object obj)
         {
