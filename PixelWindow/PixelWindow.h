@@ -33,10 +33,10 @@ private:
 
 	static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	void CreateWindowAndRunMessageLoop(HINSTANCE hInstance, RECT windowRect, LPCWSTR windowText);
+	void CreateWindowAndRunMessageLoop(HINSTANCE hInstance, POINT windowTopLeft, SIZE clientDimensions, LPCWSTR windowText);
 
 public:
-	DECLDIR PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX = 0, int windowY = 0);
+	DECLDIR PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int clientWidth, int clientHeight, int windowX = 0, int windowY = 0);
 	DECLDIR ~PixelWindow();
 
 	DECLDIR bool HasBeenClosed();
@@ -71,9 +71,9 @@ public:
 };
 
 //For C#
-extern "C" __declspec(dllexport) PixelWindow* CreatePixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX, int windowY)
+extern "C" __declspec(dllexport) PixelWindow* CreatePixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int clientWidth, int clientHeight, int windowX, int windowY)
 {
-	return new PixelWindow(hInstance, windowText, windowWidth, windowHeight, windowX, windowY);
+	return new PixelWindow(hInstance, windowText, clientWidth, clientHeight, windowX, windowY);
 }
 
 extern "C" __declspec(dllexport) void DisposePixelWindow(PixelWindow* pPixelWindow)

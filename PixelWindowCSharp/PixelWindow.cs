@@ -158,10 +158,10 @@ namespace PixelWindowCSharp
             }
         }
 
-        public PixelWindow(int windowWidth, int windowHeight, String windowTitle, int x = 0, int y = 0)
+        public PixelWindow(int clientWidth, int clientHeight, String windowTitle, int x = 0, int y = 0)
         {
             IntPtr hInstance = Process.GetCurrentProcess().Handle;
-            pPixelWindow = CreatePixelWindow(hInstance, windowTitle, windowWidth, windowHeight, x, y);
+            pPixelWindow = CreatePixelWindow(hInstance, windowTitle, clientWidth, clientHeight, x, y);
         }
 
         public void Dispose()
@@ -229,7 +229,7 @@ namespace PixelWindowCSharp
         [DllImport("PixelWindow.dll", 
             CallingConvention = CallingConvention.Cdecl, 
             CharSet = CharSet.Unicode)]
-        static private extern IntPtr CreatePixelWindow(IntPtr hInstance, string windowText, int windowWidth, int windowHeight, int windowX, int windowY);
+        static private extern IntPtr CreatePixelWindow(IntPtr hInstance, string windowText, int clientWidth, int clientHeight, int windowX, int windowY);
 
         [DllImport("PixelWindow.dll", 
             CallingConvention = CallingConvention.Cdecl, 

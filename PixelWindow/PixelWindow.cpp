@@ -16,7 +16,7 @@ LRESULT CALLBACK PixelWindow::WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wPara
 }
 
 //TODO: look up more about creating window. There are probably loads of problems with this.
-void PixelWindow::CreateWindowAndRunMessageLoop(HINSTANCE hInstance, RECT windowRect, LPCWSTR windowText)
+void PixelWindow::CreateWindowAndRunMessageLoop(HINSTANCE hInstance, POINT windowTopLeft, SIZE clientDimensions, LPCWSTR windowText)
 {
 	// Register the window class.
 	LPCWSTR CLASS_NAME = L"Sample Window Class";
@@ -31,12 +31,6 @@ void PixelWindow::CreateWindowAndRunMessageLoop(HINSTANCE hInstance, RECT window
 
 	//Note: AdjustWindowRectEx doesn't seem to actually work.
 		
-	/*RECT desiredClientRect = {};
-	desiredClientRect.left = 0;
-	desiredClientRect.top = 0;
-	desiredClientRect.right = windowRect.right - windowRect.left;
-	desiredClientRect.bottom = windowRect.bottom - windowRect.top;*/
-
 	/*RECT adjClientRect = desiredClientRect;*/
 	DWORD extendedWindowStyles = 0;
 	DWORD windowStyles = WS_OVERLAPPEDWINDOW;
@@ -46,6 +40,10 @@ void PixelWindow::CreateWindowAndRunMessageLoop(HINSTANCE hInstance, RECT window
 		throw std::exception("AdjustWindowRectEx failed");
 	}*/
 
+	//It doesn't matter what the actual dimensions are, we'll change them anyway
+	int windowWidth = 640;
+	int windowHeight = 480;
+
 	// Create the window.
 	hWindow = CreateWindowEx(
 		extendedWindowStyles,           // Optional window styles.
@@ -54,7 +52,7 @@ void PixelWindow::CreateWindowAndRunMessageLoop(HINSTANCE hInstance, RECT window
 		windowStyles,                   // Window style
 
 		// Size and position
-		windowRect.left, windowRect.top, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top,
+		windowTopLeft.x, windowTopLeft.y, windowWidth, windowHeight, 
 
 		NULL,       // Parent window    
 		hMenu,      // Menu
@@ -67,10 +65,33 @@ void PixelWindow::CreateWindowAndRunMessageLoop(HINSTANCE hInstance, RECT window
 		throw std::exception("Window creation failed");
 	}
 
-	RECT actualRect;
-	GetClientRect(hWindow, &actualRect);
-	width = actualRect.right - actualRect.left;
-	height = actualRect.bottom - actualRect.top;
+	int desiredClientWidth = clientDimensions.cx;
+	int desiredClientHeight = clientDimensions.cy;
+
+	RECT actualClientRect;
+	GetClientRect(hWindow, &actualClientRect);
+
+	int actualClientWidth = actualClientRect.right - actualClientRect.left;
+	int actualClientHeight = actualClientRect.bottom - actualClientRect.top;
+	
+	//Note that hWndInsertAfter, x, and y are set to zero. They will be ignored because of the flags.
+	SetWindowPos(hWindow, 0, 0, 0, windowWidth + (desiredClientWidth - actualClientWidth), windowHeight + (desiredClientHeight - actualClientHeight), SWP_NOMOVE | SWP_NOZORDER);
+
+	RECT finalClientRect;
+	GetClientRect(hWindow, &finalClientRect);
+
+	width = finalClientRect.right - finalClientRect.left;
+	height = finalClientRect.bottom - finalClientRect.top;
+
+	if (width != desiredClientWidth)
+	{
+		throw new std::exception();
+	}
+
+	if (height != desiredClientHeight)
+	{
+		throw new std::exception();
+	}
 
 	//DC = device context = bitmap + info needed to draw onto bitmap
 	hBackBufferDC = CreateCompatibleDC(GetDC(hWindow));
@@ -108,13 +129,10 @@ void PixelWindow::CreateWindowAndRunMessageLoop(HINSTANCE hInstance, RECT window
 	hasBeenClosed = true;
 }
 
-DECLDIR PixelWindow::PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int windowWidth, int windowHeight, int windowX, int windowY)
+DECLDIR PixelWindow::PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int clientWidth, int clientHeight, int windowX, int windowY)
 {
-	RECT windowRect;
-	windowRect.left = windowX;
-	windowRect.top = windowY;
-	windowRect.right = windowX + windowWidth;
-	windowRect.bottom = windowY + windowHeight;
+	POINT windowTopLeft = { windowX, windowY };
+	SIZE clientDimensions = { clientWidth, clientHeight };
 
 	hWindowCreatedEvent = CreateEvent(
 		NULL,                       // default security attributes
@@ -123,7 +141,7 @@ DECLDIR PixelWindow::PixelWindow(HINSTANCE hInstance, LPCWSTR windowText, int wi
 		TEXT("WindowCreatedEvent")  // object name
 		);
 
-	messageLoopThread = std::thread(&PixelWindow::CreateWindowAndRunMessageLoop, this, hInstance, windowRect, windowText);
+	messageLoopThread = std::thread(&PixelWindow::CreateWindowAndRunMessageLoop, this, hInstance, windowTopLeft, clientDimensions, windowText);
 
 	WaitForSingleObject(hWindowCreatedEvent, INFINITE);
 

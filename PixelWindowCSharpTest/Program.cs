@@ -15,6 +15,15 @@ namespace PixelWindowCSharpTest
         {
             PixelWindow window = new PixelWindow(1280, 720, "It works!");
 
+            if (window.ClientWidth != 1280)
+            {
+                Debugger.Break();
+            }
+            if (window.ClientHeight != 720)
+            {
+                Debugger.Break();
+            }
+
             //Test everything
 
             //Test width and height getters
