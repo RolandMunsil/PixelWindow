@@ -244,9 +244,10 @@ DECLDIR bool PixelWindow::IsWithinClient(int index)
 }
 
 //TODO: is there a better name?
-DECLDIR void PixelWindow::UpdateClient()
+DECLDIR bool PixelWindow::UpdateClient()
 {
-	BitBlt(GetDC(hWindow), 0, 0, width, height, hBackBufferDC, 0, 0, SRCCOPY);
+	//Will return false if the window has been closed.
+	return BitBlt(GetDC(hWindow), 0, 0, width, height, hBackBufferDC, 0, 0, SRCCOPY);
 }
 
 //Getters

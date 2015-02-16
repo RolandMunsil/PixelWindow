@@ -112,7 +112,25 @@ namespace PixelWindowCSharpTest
             Console.ReadKey();
 
             //Test Bitmap thing.
-            window.BackBuffer.Save("test.png", System.Drawing.Imaging.ImageFormat.Png);
+            //window.BackBuffer.Save("test.png", System.Drawing.Imaging.ImageFormat.Png);
+
+            Console.WriteLine("Please close the window.");
+            while (!window.IsClosed) { };
+
+            bool threwException = false;
+            try
+            {
+                window.UpdateClient();
+            }
+            catch (InvalidOperationException)
+            {
+                threwException = true;
+            }
+
+            if (!threwException)
+            {
+                Debugger.Break();
+            }
 
             window.Dispose();
         }

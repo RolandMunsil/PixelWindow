@@ -218,7 +218,10 @@ namespace PixelWindowCSharp
 
         public void UpdateClient()
         {
-            UpdateClient(pPixelWindow);
+            if (!UpdateClient(pPixelWindow))
+            {
+                throw new InvalidOperationException("Window has been closed.");
+            }
         }
 
         //dumpbin /exports "C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\Debug\PixelWindow.dll"
@@ -281,9 +284,10 @@ namespace PixelWindowCSharp
         static private extern bool IsWithinClient(IntPtr pClassObject, int index);
 
         [DllImport("PixelWindow.dll",
-            EntryPoint = "?UpdateClient@PixelWindow@@QAEXXZ",
+            EntryPoint = "?UpdateClient@PixelWindow@@QAE_NXZ",
             CallingConvention = CallingConvention.ThisCall)]
-        static private extern void UpdateClient(IntPtr pClassObject);
+        [return: MarshalAs(UnmanagedType.U1)]
+        static private extern bool UpdateClient(IntPtr pClassObject);
 
         [DllImport("PixelWindow.dll", 
             EntryPoint = "?GetClientWidth@PixelWindow@@QAEHXZ", 

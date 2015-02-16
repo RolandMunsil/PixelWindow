@@ -59,7 +59,7 @@ public:
 	DECLDIR bool IsWithinClient(int x, int y);
 	DECLDIR bool IsWithinClient(int index);
 
-	DECLDIR void UpdateClient();
+	DECLDIR bool UpdateClient();
 
 	DECLDIR int GetClientWidth();
 
