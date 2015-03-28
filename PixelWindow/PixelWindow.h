@@ -48,8 +48,8 @@ public:
 	DECLDIR void SetPixelNoCheck(int x, int y, uint32 color);
 	DECLDIR void SetPixelNoCheck(int index, uint32 color);
 
-	DECLDIR uint32 GetPixel(int x, int y);
-	DECLDIR uint32 GetPixel(int index);
+	DECLDIR bool GetPixel(int x, int y, uint32* outColor);
+	DECLDIR bool GetPixel(int index, uint32* outColor);
 
 	DECLDIR uint32 GetPixelNoCheck(int x, int y);
 	DECLDIR uint32 GetPixelNoCheck(int index);

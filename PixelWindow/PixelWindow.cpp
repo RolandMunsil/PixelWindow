@@ -202,29 +202,29 @@ DECLDIR void PixelWindow::SetPixelNoCheck(int index, uint32 color)
 	*writeTo = color;
 }
 
-DECLDIR uint32 PixelWindow::GetPixel(int x, int y)
+DECLDIR bool PixelWindow::GetPixel(int x, int y, uint32* outColor)
 {
 	if (IsWithinClient(x, y))
 	{
-		return GetPixelNoCheck(x, y);
+		*outColor = GetPixelNoCheck(x, y);
+		return true;
 	}
 	else
 	{
-		//Is this going to be a problem in C#?
-		throw std::out_of_range("Coordinates are outside of the client's bounds");
+		return false;
 	}
 }
 
-DECLDIR uint32 PixelWindow::GetPixel(int index)
+DECLDIR bool PixelWindow::GetPixel(int index, uint32* outColor)
 {
 	if (IsWithinClient(index))
 	{
-		return GetPixelNoCheck(index);
+		*outColor = GetPixelNoCheck(index);
+		return true;
 	}
 	else
 	{
-		//Is this going to be a problem in C#?
-		throw std::out_of_range("Coordinates are outside of the client's bounds");
+		return false;
 	}
 }
 
@@ -264,7 +264,11 @@ DECLDIR bool PixelWindow::IsWithinClient(int index)
 //TODO: is there a better name?
 DECLDIR bool PixelWindow::UpdateClient()
 {
-	//Will return false if the window has been closed.
+	if (hasBeenClosed)
+	{
+		return false;
+	}
+
 	return BitBlt(GetDC(hWindow), 0, 0, width, height, hBackBufferDC, 0, 0, SRCCOPY);
 }
 

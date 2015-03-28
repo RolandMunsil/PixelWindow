@@ -32,6 +32,28 @@ namespace PixelWindowCSharp
         public static readonly ARGBColor Black = (ARGBColor)0xFF000000;
         public static readonly ARGBColor White = (ARGBColor)0xFFFFFFFF;
 
+        public ARGBColor(byte red, byte green, byte blue, byte reserved = 0)
+        {
+            //So that all the variables are assigned
+            this.asUint32 = 0;
+
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+            this.reserved = reserved;
+        }
+
+        public ARGBColor(uint uint32Color)
+        {
+            //So that all the variables are assigned
+            this.red = 0;
+            this.green = 0;
+            this.blue = 0;
+            this.reserved = 0;
+
+            this.asUint32 = uint32Color;
+        }
+
         public override bool Equals(object obj)
         {
             if (!(obj is ARGBColor))
@@ -53,10 +75,7 @@ namespace PixelWindowCSharp
 
         public static bool operator ==(ARGBColor color1, ARGBColor color2)
         {
-            return color1.red == color2.red &&
-                   color1.green == color2.green &&
-                   color1.blue == color2.blue &&
-                   color1.reserved == color2.reserved;
+            return color1.asUint32 == color2.asUint32;
         }
 
         public static bool operator !=(ARGBColor color1, ARGBColor color2)
@@ -66,11 +85,13 @@ namespace PixelWindowCSharp
 
         public static explicit operator ARGBColor(uint i)
         {
-            unsafe
-            {
-                //TODO: Is this a bad idea? Is it actually faster than setting each byte? Does it actually compile to nothing?
-                return *((ARGBColor*)(&i));
-            }
+            return new ARGBColor(i);
+
+            //unsafe
+            //{
+            //    //TODO: Is this a bad idea? Is it actually faster than setting each byte? Does it actually compile to nothing?
+            //    return *((ARGBColor*)(&i));
+            //}
         }
 
         public static explicit operator uint(ARGBColor color)
@@ -118,6 +139,7 @@ namespace PixelWindowCSharp
             }
         }
 
+        //TODO: should this be IsOpen instead of IsClosed?
         public bool IsClosed
         {
             get
@@ -181,7 +203,7 @@ namespace PixelWindowCSharp
             bool success = SetPixel(pPixelWindow, x, y, color);
             if (!success)
             {
-                throw new ArgumentOutOfRangeException("Coordinate is outside of the client's bounds");
+                throw new ArgumentOutOfRangeException("Coordinates are outside of the client's bounds");
             }
         }
         public void SetPixel(int index, ARGBColor color)
@@ -189,17 +211,27 @@ namespace PixelWindowCSharp
             bool success = SetPixel(pPixelWindow, index, color);
             if (!success)
             {
-                throw new ArgumentOutOfRangeException("Coordinate is outside of the client's bounds");
+                throw new ArgumentOutOfRangeException("Index is outside of the client's bounds");
             }
         }
 
         public ARGBColor GetPixel(int x, int y)
         {
-            return GetPixel(pPixelWindow, x, y);
+            ARGBColor color;
+            if (!GetPixel(pPixelWindow, x, y, out color))
+            {
+                throw new ArgumentOutOfRangeException("Coordinates are outside of the client's bounds");
+            }
+            return color;
         }
         public ARGBColor GetPixel(int index)
         {
-            return GetPixel(pPixelWindow, index);
+            ARGBColor color;
+            if (!GetPixel(pPixelWindow, index, out color))
+            {
+                throw new ArgumentOutOfRangeException("Index is outside of the client's bounds");
+            }
+            return color;
         }
 
         public void Fill(ARGBColor color)
@@ -216,12 +248,9 @@ namespace PixelWindowCSharp
             return IsWithinClient(pPixelWindow, index);
         }
 
-        public void UpdateClient()
+        public bool UpdateClient()
         {
-            if (!UpdateClient(pPixelWindow))
-            {
-                throw new InvalidOperationException("Window has been closed.");
-            }
+            return UpdateClient(pPixelWindow);
         }
 
         //dumpbin /exports "C:\Users\Roland\Documents\Visual Studio 2013\Projects\PixelWindow\Debug\PixelWindow.dll"
@@ -257,14 +286,16 @@ namespace PixelWindowCSharp
         static private extern bool SetPixel(IntPtr pClassObject, int index, ARGBColor color);
 
         [DllImport("PixelWindow.dll",
-            EntryPoint = "?GetPixel@PixelWindow@@QAEIHH@Z",
+            EntryPoint = "?GetPixel@PixelWindow@@QAE_NHHPAI@Z",
             CallingConvention = CallingConvention.ThisCall)]
-        static private extern ARGBColor GetPixel(IntPtr pClassObject, int x, int y);
+        [return: MarshalAs(UnmanagedType.U1)]
+        static private extern bool GetPixel(IntPtr pClassObject, int x, int y, out ARGBColor color);
 
         [DllImport("PixelWindow.dll",
-            EntryPoint = "?GetPixel@PixelWindow@@QAEIH@Z",
+            EntryPoint = "?GetPixel@PixelWindow@@QAE_NHPAI@Z",
             CallingConvention = CallingConvention.ThisCall)]
-        static private extern ARGBColor GetPixel(IntPtr pClassObject, int index);
+        [return: MarshalAs(UnmanagedType.U1)]
+        static private extern bool GetPixel(IntPtr pClassObject, int index, out ARGBColor color);
 
         [DllImport("PixelWindow.dll",
             EntryPoint = "?Fill@PixelWindow@@QAEXI@Z",
