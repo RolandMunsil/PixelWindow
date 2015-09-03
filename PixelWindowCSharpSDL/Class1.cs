@@ -9,10 +9,10 @@ namespace PixelWindowCSharpSDL
 {
     public struct Color
     {
-        public byte r;
-        public byte g;
-        public byte b;
-        public byte a;
+        public byte red;
+        public byte green;
+        public byte blue;
+        public byte alpha;
     }
     public class PixelWindow : IDisposable
     {
@@ -54,17 +54,17 @@ namespace PixelWindowCSharpSDL
 
         public void SetPixel(int x, int y, Color c)
         {
-            if (IsWithinClient(x, y))
+            if (!IsWithinClient(x, y))
             {
                 throw new ArgumentOutOfRangeException("Coordinate is not within the client dimensions");
             }
-            SDL.SDL_SetRenderDrawColor(pRenderer, c.r, c.g, c.b, c.a);
+            SDL.SDL_SetRenderDrawColor(pRenderer, c.red, c.green, c.blue, c.alpha);
             SDL.SDL_RenderDrawPoint(pRenderer, x, y);
         }
 
         public bool IsWithinClient(int x, int y)
         {
-            return x < 0 || x >= ClientWidth || y < 0 || y > ClientHeight;
+            return x >= 0 && x < ClientWidth && y >= 0 && y < ClientHeight;
         }
 
         public void UpdateClient()
@@ -76,5 +76,7 @@ namespace PixelWindowCSharpSDL
         //{
         //    SDL.SDL_RenderCopy(
         //}
+
+        //public void FillRect
     }
 }

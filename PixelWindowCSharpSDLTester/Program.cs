@@ -19,10 +19,10 @@ namespace PixelWindowCSharpSDLTester
                 for (int y = 0; y < 500; y++)
                 {
                     window.SetPixel(x, y, new Color{
-                        r = 255, 
-                        g = 0, 
-                        b = 0, 
-                        a = 0}
+                        red = 255, 
+                        green = 0, 
+                        blue = 0, 
+                        alpha = 0}
                         );
                 }
             }
