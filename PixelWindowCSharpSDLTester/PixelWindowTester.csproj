@@ -48,9 +48,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PixelWindowCSharpSDL\PixelWindowCSharpSDL.csproj">
+    <ProjectReference Include="..\PixelWindowCSharpSDL\PixelWindowSDL.csproj">
       <Project>{e176082a-0977-4f9e-978c-fc88aeec584d}</Project>
-      <Name>PixelWindowCSharpSDL</Name>
+      <Name>PixelWindowSDL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
