@@ -48,7 +48,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PixelWindowCSharpSDL\PixelWindowSDL.csproj">
+    <ProjectReference Include="..\PixelWindowSDL\PixelWindowSDL.csproj">
       <Project>{e176082a-0977-4f9e-978c-fc88aeec584d}</Project>
       <Name>PixelWindowSDL</Name>
     </ProjectReference>

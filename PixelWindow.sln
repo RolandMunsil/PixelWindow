@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelWindowSDL", "PixelWindowCSharpSDL\PixelWindowSDL.csproj", "{E176082A-0977-4F9E-978C-FC88AEEC584D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelWindowSDL", "PixelWindowSDL\PixelWindowSDL.csproj", "{E176082A-0977-4F9E-978C-FC88AEEC584D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelWindowTester", "PixelWindowCSharpSDLTester\PixelWindowTester.csproj", "{713067CA-99F1-459B-AA40-97D6665B1D26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelWindowTester", "PixelWindowTester\PixelWindowTester.csproj", "{713067CA-99F1-459B-AA40-97D6665B1D26}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E176082A-0977-4F9E-978C-FC88AEEC584D} = {E176082A-0977-4F9E-978C-FC88AEEC584D}
 	EndProjectSection
