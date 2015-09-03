@@ -27,10 +27,33 @@ namespace PixelWindowTester
                 }
             }
 
-            window.SetPixel(501, 501, new Color());
+            EnsureException<ArgumentOutOfRangeException>(() => window.SetPixel(501, 501, new Color()));
+            EnsureException<ArgumentOutOfRangeException>(() => window.SetPixel(501, 250, new Color()));
+            EnsureException<ArgumentOutOfRangeException>(() => window.SetPixel(250, 501, new Color()));
+            EnsureException<ArgumentOutOfRangeException>(() => window.SetPixel(-1, 1, new Color()));
+            EnsureException<ArgumentOutOfRangeException>(() => window.SetPixel(-1, -1, new Color()));
+            EnsureException<ArgumentOutOfRangeException>(() => window.SetPixel(1, -1, new Color()));
 
             window.UpdateClient();
             Console.ReadKey();
+        }
+
+        static void EnsureException<TException>(Action action) where TException : Exception
+        {
+            bool exceptionThrown = false;
+            try
+            {
+                action();
+            }
+            catch (TException)
+            {
+                exceptionThrown = true;
+            }
+
+            if (!exceptionThrown)
+            {
+                throw new Exception("action did not throw exception");
+            }
         }
     }
 }
