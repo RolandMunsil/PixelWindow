@@ -7,8 +7,8 @@
     <ProjectGuid>{E176082A-0977-4F9E-978C-FC88AEEC584D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PixelWindowCSharpSDL</RootNamespace>
-    <AssemblyName>PixelWindowCSharpSDL</AssemblyName>
+    <RootNamespace>PixelWindowSDL</RootNamespace>
+    <AssemblyName>PixelWindowSDL</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

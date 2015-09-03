@@ -7,8 +7,8 @@
     <ProjectGuid>{713067CA-99F1-459B-AA40-97D6665B1D26}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PixelWindowCSharpSDLTester</RootNamespace>
-    <AssemblyName>PixelWindowCSharpSDLTester</AssemblyName>
+    <RootNamespace>PixelWindowTester</RootNamespace>
+    <AssemblyName>PixelWindowTester</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
