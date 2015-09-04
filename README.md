@@ -1,6 +1,8 @@
 # PixelWindow
 A library for creating windows with the ability to set the color of individual client pixels.
 
+NOTE: Example is currently not updated for the new SDL PixelWindow.
+
 For example:
 ```csharp
 public static void Main(String[] args)
