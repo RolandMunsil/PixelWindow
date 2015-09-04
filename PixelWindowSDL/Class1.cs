@@ -13,6 +13,55 @@ namespace PixelWindowSDL
         public byte green;
         public byte blue;
         public byte alpha;
+
+        public Color(byte red, byte green, byte blue, byte alpha = 0)
+        {
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+            this.alpha = alpha;
+        }
+
+        public Color(int hexColor3byte)
+        {
+            red =   (byte)(hexColor3byte >> 16);
+            green = (byte)(hexColor3byte >> 8);
+            blue =  (byte)(hexColor3byte);
+            alpha = 0;
+        }
+
+        public static explicit operator Color(int hexColor3byte)
+        {
+            return new Color(hexColor3byte);
+        }
+
+        public static readonly Color White = new Color(0xFF, 0xFF, 0xFF);
+        public static readonly Color Black = new Color(0, 0, 0);
+        public static readonly Color Red = new Color(0xFF, 0, 0);
+        public static readonly Color Green = new Color(0, 0xFF, 0);
+        public static readonly Color Blue = new Color(0, 0, 0xFF);
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Color))
+            {
+                return false;
+            }
+            return (Color)obj == this;
+        }
+
+        public static bool operator ==(Color color1, Color color2)
+        {
+            return color1.red == color2.red &&
+                   color1.green == color2.green &&
+                   color1.blue == color2.blue &&
+                   color1.alpha == color2.alpha;
+        }
+
+        public static bool operator !=(Color color1, Color color2)
+        {
+            return !(color1 == color2);
+        }
     }
     public class PixelWindow : IDisposable
     {
@@ -21,11 +70,13 @@ namespace PixelWindowSDL
 
         private IntPtr pWindow;
         private IntPtr pRenderer;
-        public PixelWindow(int width, int height)
+        private bool reverseYDirection;
+        public PixelWindow(int width, int height, bool reverseYDirection = false)
         {
             ClientWidth = width;
             ClientHeight = height;
             SDL.SDL_CreateWindowAndRenderer(width, height, 0, out pWindow, out pRenderer);
+            this.reverseYDirection = reverseYDirection;
         }
 
         public void Dispose()
@@ -59,7 +110,7 @@ namespace PixelWindowSDL
                 throw new ArgumentOutOfRangeException("Coordinate is not within the client dimensions");
             }
             SDL.SDL_SetRenderDrawColor(pRenderer, c.red, c.green, c.blue, c.alpha);
-            SDL.SDL_RenderDrawPoint(pRenderer, x, y);
+            SDL.SDL_RenderDrawPoint(pRenderer, x, this.reverseYDirection ? (ClientHeight - 1) - y : y);
         }
 
         public bool IsWithinClient(int x, int y)
