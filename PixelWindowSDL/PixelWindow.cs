@@ -108,6 +108,7 @@ namespace PixelWindowSDL
                 {
                     throw new Exception("Window and renderer creation failed.");
                 }
+                SDL.SDL_SetWindowPosition(pWindow, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED);
                 windowDoneCreating = true;
                 EventLoop();
                 //TODO: dispose stuff? Or wait for Dispose() call?
