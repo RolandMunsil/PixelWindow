@@ -1,13 +1,13 @@
 # PixelWindow
 A library for creating windows with the ability to set the color of individual client pixels.
 
-NOTE: Example is currently not updated for the new SDL PixelWindow.
-
 For example:
 ```csharp
 public static void Main(String[] args)
 {
-    using (PixelWindow window = new PixelWindow(1280, 720, "Circles Example"))
+    //Note that the 'true' causes the y-axis to be upward instead of the usual downward. 
+    //So, for example, (0, 0) is the bottom left instead of the top left.
+    using (PixelWindow window = new PixelWindow(1280, 720, true))
     {
         //Loop through all the pixels
         for (int x = 0; x < window.ClientWidth; x++)
@@ -20,26 +20,25 @@ public static void Main(String[] args)
                 //Make the gradient loop every 256 pixels
                 byte whiteness = (byte)(distance % 256);
 
-                ARGBColor color = new ARGBColor
+                Color color = new Color
                 {
                     red = whiteness,
                     green = whiteness,
                     blue = whiteness,
-                    reserved = 0
                 };
 
                 window[x, y] = color;
             }
         }
-        
+
         //Show the screen.
         window.UpdateClient();
 
         //Save the image as a PNG.
-        window.BackBuffer.Save("Cool Circles.png");
+        window.SaveClientToPNG("Cool Circles.png");
 
         //Wait for the window to be closed by the user.
-        while (!window.IsClosed) ;
+        while (window.IsOpen) ;
     }
 }
 ```
