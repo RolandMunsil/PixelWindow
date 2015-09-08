@@ -45,4 +45,4 @@ public static void Main(String[] args)
 This will generate the following image:
 ![Cool circles!](http://i.imgur.com/79inIJ8.png)
 
-*Also: If you see something in here that looks problematic, please tell me! I am not experienced with SDL and would love to know how I can improve my code!*
+**Also: If you see something in here that looks problematic, please tell me! I am not experienced with SDL and would love to know how I can improve my code!**
