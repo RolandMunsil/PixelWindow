@@ -17,7 +17,7 @@ namespace PixelWindowSDL
         public byte blue;
         public byte alpha;
 
-        public Color(byte red, byte green, byte blue, byte alpha = 0)
+        public Color(byte red, byte green, byte blue, byte alpha = 0xFF)
         {
             this.red = red;
             this.green = green;
@@ -30,7 +30,7 @@ namespace PixelWindowSDL
             red =   (byte)(hexColor3byte >> 16);
             green = (byte)(hexColor3byte >> 8);
             blue =  (byte)(hexColor3byte);
-            alpha = 0;
+            alpha = 0xFF;
         }
 
         public static explicit operator Color(int hexColor3byte)
@@ -73,6 +73,7 @@ namespace PixelWindowSDL
             return !(color1 == color2);
         }
     }
+    //TODO: mouse pos, etc.
     public class PixelWindow : IDisposable
     {
         public int ClientWidth { get; private set; }
@@ -81,6 +82,8 @@ namespace PixelWindowSDL
 
         private IntPtr pWindow;
         private IntPtr pRenderer;
+        private IntPtr pBackBufferSurface;
+        private SDL.SDL_Surface backBufferSurface;
         private bool yAxisPointsUpwards;
 
         private Thread windowThread;
@@ -103,14 +106,32 @@ namespace PixelWindowSDL
             windowThread = new Thread(delegate()
             {
                 SDL.SDL_Init(SDL.SDL_INIT_EVERYTHING);
-                //TODO: why does ths work without calling SDL_Init?
-                if (-1 == SDL.SDL_CreateWindowAndRenderer(width, height, SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI, out pWindow, out pRenderer))
-                {
-                    throw new Exception("Window and renderer creation failed.");
-                }
+
+                //Create window
+                pWindow = SDL.SDL_CreateWindow("", 0, 0, width, height, SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI);
+                if (pWindow == IntPtr.Zero) throw new Exception("Window creation failed.");
                 SDL.SDL_SetWindowPosition(pWindow, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED);
+
+                //Create renderer
+                pRenderer = SDL.SDL_CreateRenderer(pWindow, -1, SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED | SDL.SDL_RendererFlags.SDL_RENDERER_TARGETTEXTURE);
+                if (pRenderer == IntPtr.Zero) throw new Exception("Renderer creation failed.");
+                SDL.SDL_SetRenderDrawBlendMode(pRenderer, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+
+                //Create backbuffer surface
+                pBackBufferSurface = SDL.SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+                unsafe
+                {
+                    backBufferSurface = *((SDL.SDL_Surface*)pBackBufferSurface);
+                }
+                //Unfortunately, because the 2nd parameter is a ref, I can't just pass in null.
+                SDL.SDL_Rect r = new SDL.SDL_Rect { x = 0, y = 0, w = width, h = height };
+                //Fill surface with black so that savepng output matches screen. Otherwise all the pixels initialize to alpha=0
+                SDL.SDL_FillRect(pBackBufferSurface, ref r, 0xFF000000);
+                //backBufferSurface = (SDL.SDL_Surface)Marshal.PtrToStructure(pBackBufferSurface, typeof(SDL.SDL_Surface));
+
                 windowDoneCreating = true;
                 EventLoop();
+                SDL.SDL_FreeSurface(pBackBufferSurface);
                 //TODO: dispose stuff? Or wait for Dispose() call?
             });
             windowThread.Start();
@@ -149,8 +170,17 @@ namespace PixelWindowSDL
             {
                 throw new ArgumentOutOfRangeException("Coordinate is not within the client dimensions");
             }
-            SDL.SDL_SetRenderDrawColor(pRenderer, c.red, c.green, c.blue, c.alpha);
-            SDL.SDL_RenderDrawPoint(pRenderer, x, this.yAxisPointsUpwards ? (ClientHeight - 1) - y : y);
+
+            if (this.yAxisPointsUpwards) y = (ClientHeight - 1) - y;
+            int colorAsInt = (c.alpha << 24) | (c.red << 16) | (c.green << 8) | (c.blue);
+
+            int pixelIndex = y * backBufferSurface.w + x;
+            unsafe
+            {
+                int* pPixel = ((int*)backBufferSurface.pixels.ToPointer()) + pixelIndex;
+                *pPixel = colorAsInt;
+            }
+
         }
 
         public bool IsWithinClient(int x, int y)
@@ -160,7 +190,13 @@ namespace PixelWindowSDL
 
         public void UpdateClient()
         {
+            //Copy surface to window backbuffer
+            SDL.SDL_RenderCopy(pRenderer, SDL.SDL_CreateTextureFromSurface(pRenderer, pBackBufferSurface), IntPtr.Zero, IntPtr.Zero);
+
+            //Present window and clear backbuffer
             SDL.SDL_RenderPresent(pRenderer);
+            SDL.SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 0);
+            SDL.SDL_RenderClear(pRenderer);
         }
 
         private void EventLoop()
@@ -169,6 +205,7 @@ namespace PixelWindowSDL
             {
                 SDL.SDL_Event sdlEvent;
                 SDL.SDL_PollEvent(out sdlEvent);
+
                 if (sdlEvent.type == SDL.SDL_EventType.SDL_QUIT)
                 {
                     IsOpen = false;
@@ -177,17 +214,9 @@ namespace PixelWindowSDL
             }
         }
 
-        //http://stackoverflow.com/questions/22315980/sdl2-c-taking-a-screenshot
         public void SaveClientToPNG(String filePath)
         {
-            IntPtr pSurface = SDL.SDL_CreateRGBSurface(0, ClientWidth, ClientHeight, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
-            SDL.SDL_Surface surface = (SDL.SDL_Surface)Marshal.PtrToStructure(pSurface, typeof(SDL.SDL_Surface));
-            SDL.SDL_Rect rect = new SDL.SDL_Rect { x = 0, y = 0, w = ClientWidth, h = ClientHeight };
-
-            SDL.SDL_RenderReadPixels(pRenderer, ref rect, SDL.SDL_PIXELFORMAT_ARGB8888, surface.pixels, surface.pitch);
-            SDL_image.IMG_SavePNG(pSurface, filePath);
-
-            SDL.SDL_FreeSurface(pSurface);
+            SDL_image.IMG_SavePNG(pBackBufferSurface, filePath);
         }
 
         //public void FillRect
