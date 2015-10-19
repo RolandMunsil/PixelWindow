@@ -191,7 +191,12 @@ namespace PixelWindowSDL
         public void UpdateClient()
         {
             //Copy surface to window backbuffer
-            SDL.SDL_RenderCopy(pRenderer, SDL.SDL_CreateTextureFromSurface(pRenderer, pBackBufferSurface), IntPtr.Zero, IntPtr.Zero);
+            IntPtr texture = SDL.SDL_CreateTextureFromSurface(pRenderer, pBackBufferSurface);
+            SDL.SDL_RenderCopy(pRenderer, texture, IntPtr.Zero, IntPtr.Zero);
+            if(texture != IntPtr.Zero)
+            {
+                SDL.SDL_DestroyTexture(texture);
+            }
 
             //Present window and clear backbuffer
             SDL.SDL_RenderPresent(pRenderer);
