@@ -115,7 +115,7 @@ namespace PixelWindowSDL
                 //Create renderer
                 pRenderer = SDL.SDL_CreateRenderer(pWindow, -1, SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED | SDL.SDL_RendererFlags.SDL_RENDERER_TARGETTEXTURE);
                 if (pRenderer == IntPtr.Zero) throw new Exception("Renderer creation failed.");
-                SDL.SDL_SetRenderDrawBlendMode(pRenderer, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+                DoAndCheckError(SDL.SDL_SetRenderDrawBlendMode(pRenderer, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND), "Error setting blend mode.");
 
                 //Create backbuffer surface
                 pBackBufferSurface = SDL.SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
@@ -126,7 +126,7 @@ namespace PixelWindowSDL
                 //Unfortunately, because the 2nd parameter is a ref, I can't just pass in null.
                 SDL.SDL_Rect r = new SDL.SDL_Rect { x = 0, y = 0, w = width, h = height };
                 //Fill surface with black so that savepng output matches screen. Otherwise all the pixels initialize to alpha=0
-                SDL.SDL_FillRect(pBackBufferSurface, ref r, 0xFF000000);
+                DoAndCheckError(SDL.SDL_FillRect(pBackBufferSurface, ref r, 0xFF000000), "Error filling backbuffer surface.");
                 //backBufferSurface = (SDL.SDL_Surface)Marshal.PtrToStructure(pBackBufferSurface, typeof(SDL.SDL_Surface));
 
                 windowDoneCreating = true;
@@ -192,16 +192,15 @@ namespace PixelWindowSDL
         {
             //Copy surface to window backbuffer
             IntPtr texture = SDL.SDL_CreateTextureFromSurface(pRenderer, pBackBufferSurface);
-            SDL.SDL_RenderCopy(pRenderer, texture, IntPtr.Zero, IntPtr.Zero);
-            if(texture != IntPtr.Zero)
-            {
-                SDL.SDL_DestroyTexture(texture);
-            }
+            if (texture == IntPtr.Zero) Error("Error creating texture.");
+
+            DoAndCheckError(SDL.SDL_RenderCopy(pRenderer, texture, IntPtr.Zero, IntPtr.Zero), "Error copying backbuffer surface to texture.");
+            if(texture != IntPtr.Zero) SDL.SDL_DestroyTexture(texture);
 
             //Present window and clear backbuffer
             SDL.SDL_RenderPresent(pRenderer);
-            SDL.SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 0);
-            SDL.SDL_RenderClear(pRenderer);
+            DoAndCheckError(SDL.SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 0), "Error setting renderer draw color.");
+            DoAndCheckError(SDL.SDL_RenderClear(pRenderer), "Error clearing renderer.");
         }
 
         private void EventLoop()
@@ -221,9 +220,24 @@ namespace PixelWindowSDL
 
         public void SaveClientToPNG(String filePath)
         {
-            SDL_image.IMG_SavePNG(pBackBufferSurface, filePath);
+            DoAndCheckError(SDL_image.IMG_SavePNG(pBackBufferSurface, filePath), "Error saving client to PNG.");
         }
 
         //public void FillRect
+
+        //TODO: Is this the best way of doing this?
+        private void DoAndCheckError(int returnValue, String message)
+        {
+            if(returnValue != 0)
+            {
+                Error(message);
+            }
+        }
+
+        //TODO: should this return the exception instead of throwing it?
+        private void Error(String message)
+        {
+            throw new Exception(message + " Last error: \"" + SDL.SDL_GetError() + "\"");
+        }
     }
 }
