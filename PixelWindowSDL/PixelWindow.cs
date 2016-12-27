@@ -136,7 +136,7 @@ namespace PixelWindowSDL
             });
             windowThread.Start();
 
-            while (!windowDoneCreating) ;
+            SpinWait.SpinUntil(() => windowDoneCreating);
         }
 
         public void Dispose()
